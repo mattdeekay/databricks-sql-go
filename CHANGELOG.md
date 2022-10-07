@@ -2,6 +2,10 @@
 
 ## 0.1.x (Unreleased)
 
+- Fixed bug when escaping string parameters
+- Updated Thrift definition
+- Direct results support
+
 ## 0.1.4 (2022-07-30)
 
 - Fix: Could not fetch rowsets greater than the value of `maxRows` (#18)

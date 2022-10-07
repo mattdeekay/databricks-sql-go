@@ -37,6 +37,11 @@ func (s *Session) ExecuteStatement(ctx context.Context, stmt string) (*Operation
 		SessionHandle: s.h,
 		Statement:     stmt,
 	}
+	if ctx.Value("prefetchRows").(int) > 0 {
+		req.GetDirectResults = &cli_service.TSparkGetDirectResults{
+			MaxRows: int64(ctx.Value("prefetchRows").(int)),
+		}
+	}
 	resp, err := s.hive.client.ExecuteStatement(ctx, &req)
 
 	if err != nil {
@@ -48,7 +53,7 @@ func (s *Session) ExecuteStatement(ctx context.Context, stmt string) (*Operation
 	s.hive.log.Printf("execute operation: %s", guid(resp.OperationHandle.OperationId.GUID))
 	s.hive.log.Printf("operation. has resultset: %v", resp.OperationHandle.GetHasResultSet())
 	s.hive.log.Printf("operation. modified row count: %f", resp.OperationHandle.GetModifiedRowCount())
-	return &Operation{h: resp.OperationHandle, hive: s.hive}, nil
+	return &Operation{h: resp.OperationHandle, hive: s.hive, directResults: resp.DirectResults}, nil
 }
 
 // Close session

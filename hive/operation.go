@@ -9,8 +9,9 @@ import (
 
 // Operation represents hive operation
 type Operation struct {
-	hive *Client
-	h    *cli_service.TOperationHandle
+	hive          *Client
+	h             *cli_service.TOperationHandle
+	directResults *cli_service.TSparkDirectResults
 }
 
 // HasResultSet return if operation has result set
